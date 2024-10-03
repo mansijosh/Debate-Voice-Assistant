@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Debate Voice Assistant</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+
+</head>
+<body>
+    <div class="container">
+        <h1>Debate Voice Assistant</h1>
+        <button id="micButton">🎤 Ready to start Debate</button>
+        <div id="chat" class="chat-box"></div> <!-- Chat area for displaying messages -->
+    </div>
+
+    <script>
+        const micButton = document.getElementById('micButton');
+        const chatDiv = document.getElementById('chat');
+
+        micButton.addEventListener('click', async () => {
+            chatDiv.innerHTML += `<div class="user">User: Listening...</div>`;
+            const response = await fetch('/debate_voice', { method: 'POST' });
+            const data = await response.json();
+
+            // Display user's input and AI's response
+            chatDiv.innerHTML += `<div class="user">User: ${data.user_input}</div>`;
+            chatDiv.innerHTML += `<div class="ai">AI: ${data.response}</div>`;
+            chatDiv.scrollTop = chatDiv.scrollHeight; // Auto-scroll to the bottom
+        });
+    </script>
+</body>
+</html>
